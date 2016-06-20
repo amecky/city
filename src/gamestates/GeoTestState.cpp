@@ -8,102 +8,12 @@
 #include <renderer\graphics.h>
 #include <utils\TileMapReader.h>
 #include "..\Constants.h"
+#include "..\utils\TileGrid.h"
 
 const int SIZE_X = 8;
 const int SIZE_Y = 8;
 
-struct TileGrid {
 
-	int* data;
-	int size;
-	int total;
-
-	TileGrid(int sz) {
-		total = sz * sz;
-		size = sz;
-		data = new int[total];
-		for (int i = 0; i < total; ++i) {
-			data[i] = 0;
-		}
-	}
-
-	~TileGrid() {
-		delete[] data;
-	}
-
-	bool isValid(int x, int y) {
-		if (x < 0 || x >= size || y < 0 || y >= size) {
-			return false;
-		}
-		return true;
-	}
-
-	bool isUsed(int x, int y) {
-		if (isValid(x, y)) {
-			int idx = x + y * size;
-			return data[idx] == 1;
-		}
-		return false;
-	}
-
-	void toggle(int idx) {
-		if (idx >= 0 && idx < total) {
-			if (data[idx] == 1) {
-				data[idx] = 0;
-			}
-			else {
-				data[idx] = 1;
-			}
-		}
-	}
-
-	void toggle(int x, int y) {
-		if (isValid(x, y)) {
-			int idx = x + y * size;
-			if (data[idx] == 1) {
-				data[idx] = 0;
-			}
-			else {
-				data[idx] = 1;
-			}
-		}
-	}
-
-	int adjacents(int xp, int yp) {
-		int cnt = 0;
-		int sx = xp - 1;
-		int sy = yp - 1;
-		for (int y = 0; y < 3; ++y) {
-			for (int x = 0; x < 3; ++x) {
-				if (x != 1 && y != 1) {
-					if (isUsed(sx + x, sy + y)) {
-						++cnt;
-					}
-				}
-			}
-		}
-		return cnt;
-	}
-
-	int free_adjacents(int xp, int yp,int* ret) {
-		int cnt = 0;
-		for (int y = -1; y < 2; ++y) {
-			for (int x = -1; x < 2; ++x) {
-				if (x == 0 && y == 0) {
-					continue;
-				}
-				int idx = (xp + x) + (yp + y) * size;
-				if (isValid(xp + x, yp + y)) {
-					int idx = (xp + x) + (yp + y) * size;
-					if (data[idx] == 0) {
-						ret[cnt++] = idx;
-					}
-				}
-			}
-		}
-		return cnt;
-	}
-};
 
 GeoTestState::GeoTestState() : ds::GameState("GeoTestState"), _name("base_house") , _gui(0) , _mesh(0) {
 	_camera = (ds::FPSCamera*)ds::res::getCamera("fps");
@@ -143,6 +53,77 @@ void GeoTestState::init() {
 	// ----------------------------------------
 	// house building test
 	// ----------------------------------------
+	SimpleGrid grid(10);
+	int cell_size = 2;
+	int cells = 3;
+	int d = 10 - cell_size * cells;
+	int offset = d / cell_size;
+	int total = cells * 2;
+
+	for (int y = 0; y < cells; ++y) {
+		for (int x = 0; x < cells; ++x) {
+			int sx = math::random(0, offset - 1) + x * 10 / cells;
+			int sy = math::random(0, offset - 1) + y * 10 / cells;
+			grid.set(sx, sy, 1);
+			grid.set(sx + 1, sy, 1);
+			grid.set(sx, sy + 1, 1);
+			grid.set(sx + 1, sy + 1, 1);
+		}
+	}
+
+	for (int y = 0; y < 10; ++y) {
+		for (int x = 0; x < 10; ++x) {
+			if (grid.get(x, y) == 0) {
+				int b = grid.adjacents(x, y, 1);
+				if (b != 0) {
+					grid.set(x, y, 2);
+				}
+			}
+		}
+	}
+
+	grid.debug();
+
+	for (int y = 0; y < 10; ++y) {
+		for (int x = 0; x < 10; ++x) {
+			if (grid.get(x, y) == 0) {
+				int b = grid.adjacents(x, y, 2);
+				if (b != 0) {
+					grid.set(x, y, 2);
+				}
+			}
+		}
+	}
+
+	grid.debug();
+
+	for (int y = 0; y < 10; ++y) {
+		for (int x = 0; x < 10; ++x) {
+			if (grid.get(x, y) == 2) {
+				int b = grid.adjacents(x, y);
+				if (b != 0) {
+					//LOG << "x: " << x << " y: " << y << " b: " << b;
+					grid.set(x, y, 10 + b);
+				}
+			}
+		}
+	}
+
+	grid.debug();
+
+	for (int y = 0; y < 10; ++y) {
+		for (int x = 0; x < 10; ++x) {
+			if (grid.get(x, y) == 0) {
+				buildGrass(p2i(-5 + x, 5 - y));
+			}
+			if (grid.get(x,y) == 1) {
+				buildHouse(p2i(-5 + x, 5 - y));
+			}
+			if (grid.get(x,y) > 10 ) {
+				buildStreet(p2i(-5 + x, 5 - y),grid.get(x,y) - 10);
+			}
+		}
+	}
 	/*
 	for (int i = 0; i < 6; ++i) {
 		buildHouse(p2i(-4+i, 0));
@@ -150,7 +131,7 @@ void GeoTestState::init() {
 		buildHouse(p2i(-4 + i, -2));
 	}
 	*/
-	buildStreet(p2i(0, 0), 13);
+	//buildStreet(p2i(0, 0), 5);
 	//buildStreet(p2i(0, 0));
 
 	// ----------------------------------------
@@ -658,16 +639,32 @@ void GeoTestState::createWindow(const v3& center) {
 }
 
 // ----------------------------------------------------------
+// build grass
+// ----------------------------------------------------------
+void GeoTestState::buildGrass(const p2i& gridPos) {
+	ds::Mesh* m = new ds::Mesh;
+	gen.clear();
+	gen.set_color_selection(GRASS);
+	v3 gp[] = { v3(-0.5f,0.0f,0.5f),v3(0.5f,0.0f,0.5f),v3(0.5f,0.0f,-0.5f),v3(-0.5f,0.0f,-0.5f) };
+	gen.add_face(gp);
+	gen.recalculate_normals();
+	gen.build(m);
+	float sx = gridPos.x;
+	float sz = gridPos.y;
+	_scene->addStatic(m, v3(sx, 0.0f, sz));
+	_objects.push_back(m);
+}
+// ----------------------------------------------------------
 // build house
 // ----------------------------------------------------------
 void GeoTestState::buildHouse(const p2i& gridPos) {
 	ds::Mesh* m = new ds::Mesh;
 	gen.clear();
 	static ds::Color house_colors[] = { ds::Color(206, 122, 106, 255) , ds::Color(201,165,109,255), ds::Color(160,149,120,255) };
-	int floors = math::random(1.0f, 4.9f);
+	int floors = math::random(1.0f, 3.9f);
 	float h = 0.0f;
 	int cnr = math::random(0.0f, 2.9f);
-	gen.set_color_selection(ds::Color(169, 160, 156));
+	gen.set_color_selection(GRASS);
 	v3 gp[] = { v3(-0.5f,0.0f,0.5f),v3(0.5f,0.0f,0.5f),v3(0.5f,0.0f,-0.5f),v3(-0.5f,0.0f,-0.5f) };
 	gen.add_face(gp);
 	for (int i = 0; i < floors; ++i) {		

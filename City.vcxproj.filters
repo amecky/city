@@ -19,6 +19,9 @@
     <Filter Include="content\shaders">
       <UniqueIdentifier>{12d73df3-e8d2-4f4b-ac8e-6c879f5eb9f4}</UniqueIdentifier>
     </Filter>
+    <Filter Include="utils">
+      <UniqueIdentifier>{2c66fa02-d423-4798-a4ad-897ce1eb076e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\City.cpp" />
@@ -47,6 +50,9 @@
       <Filter>states</Filter>
     </ClInclude>
     <ClInclude Include="src\TinyWorld.h" />
+    <ClInclude Include="src\utils\TileGrid.h">
+      <Filter>utils</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="City.manifest" />
