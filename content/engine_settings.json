@@ -1,0 +1,10 @@
+basic_settings {
+	name : "Stuff"
+	screen_width : 1024
+	screen_height : 768
+	clear_color : 189,186,195,255
+	full_screen : false
+	synched : true 
+	reporting_directory : "reports"
+}		
+

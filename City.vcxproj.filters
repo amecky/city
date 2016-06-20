@@ -1,0 +1,101 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="states">
+      <UniqueIdentifier>{542ec666-7c31-4696-9b30-c5c7da1d98a3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="content">
+      <UniqueIdentifier>{476f048c-da8d-4ca9-b1a9-31f24fcd2871}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="content\dialogs">
+      <UniqueIdentifier>{e3ee85ee-179c-4dab-adc6-3304b01f64a4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="content\resources">
+      <UniqueIdentifier>{445223f6-9972-4b71-b36e-a989f80f85ba}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="content\particles">
+      <UniqueIdentifier>{7ef10cf8-8119-44c7-a981-e2774ea54e2f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="content\shaders">
+      <UniqueIdentifier>{12d73df3-e8d2-4f4b-ac8e-6c879f5eb9f4}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\City.cpp" />
+    <ClCompile Include="src\gamestates\GeoTestState.cpp">
+      <Filter>states</Filter>
+    </ClCompile>
+    <ClCompile Include="src\gamestates\MeshGenTestState.cpp">
+      <Filter>states</Filter>
+    </ClCompile>
+    <ClCompile Include="src\gamestates\WorldState.cpp">
+      <Filter>states</Filter>
+    </ClCompile>
+    <ClCompile Include="src\TinyWorld.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="resource.h" />
+    <ClInclude Include="src\City.h" />
+    <ClInclude Include="src\Constants.h" />
+    <ClInclude Include="src\gamestates\GeoTestState.h">
+      <Filter>states</Filter>
+    </ClInclude>
+    <ClInclude Include="src\gamestates\MeshGenTestState.h">
+      <Filter>states</Filter>
+    </ClInclude>
+    <ClInclude Include="src\gamestates\WorldState.h">
+      <Filter>states</Filter>
+    </ClInclude>
+    <ClInclude Include="src\TinyWorld.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="City.manifest" />
+    <None Include="content\resources\xscale.json">
+      <Filter>content\resources</Filter>
+    </None>
+    <None Include="README.md" />
+    <None Include="TODO.md" />
+    <None Include="content\dialogs\test_dialog.json">
+      <Filter>content\dialogs</Filter>
+    </None>
+    <None Include="content\engine_settings.json">
+      <Filter>content</Filter>
+    </None>
+    <None Include="content\dialogs\GameOver.json">
+      <Filter>content\dialogs</Filter>
+    </None>
+    <None Include="content\dialogs\Highscores.json">
+      <Filter>content\dialogs</Filter>
+    </None>
+    <None Include="content\dialogs\MainMenu.json">
+      <Filter>content\dialogs</Filter>
+    </None>
+    <None Include="content\dialogs\HUD.json">
+      <Filter>content\dialogs</Filter>
+    </None>
+    <None Include="content\resources.json">
+      <Filter>content</Filter>
+    </None>
+    <None Include="content\resources\gui_font.json">
+      <Filter>content\resources</Filter>
+    </None>
+    <None Include="content\particles\explosion.json">
+      <Filter>content\particles</Filter>
+    </None>
+    <None Include="content\particles\particlesystems.json">
+      <Filter>content\particles</Filter>
+    </None>
+    <None Include="content\particles\inner_explosion.json">
+      <Filter>content\particles</Filter>
+    </None>
+    <None Include="content\particles\streaks.json">
+      <Filter>content\particles</Filter>
+    </None>
+    <None Include="content\path.json">
+      <Filter>content</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="City.rc" />
+  </ItemGroup>
+</Project>
