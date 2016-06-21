@@ -53,24 +53,35 @@ void GeoTestState::init() {
 	// ----------------------------------------
 	// house building test
 	// ----------------------------------------
+	int grid_dim = 10;
 	SimpleGrid grid(10);
 	int cell_size = 2;
 	int cells = 3;
 	int d = 10 - cell_size * cells;
 	int offset = d / cell_size;
 	int total = cells * 2;
+	int step = grid_dim / cells;
 
+	for (int i = 0; i < cells + 1; ++i) {
+		int y = i * step;
+		for (int x = 0; x < grid_dim; ++x) {
+			grid.set(x, y, 2);
+			grid.set(y, x, 2);
+		}
+	}
 	for (int y = 0; y < cells; ++y) {
 		for (int x = 0; x < cells; ++x) {
-			int sx = math::random(0, offset - 1) + x * 10 / cells;
-			int sy = math::random(0, offset - 1) + y * 10 / cells;
+			//int sx = math::random(0, offset - 1) + x * 10 / cells;
+			//int sy = math::random(0, offset - 1) + y * 10 / cells;
+			int sx = x * step + 1;
+			int sy = y * step + 1;
 			grid.set(sx, sy, 1);
 			grid.set(sx + 1, sy, 1);
 			grid.set(sx, sy + 1, 1);
 			grid.set(sx + 1, sy + 1, 1);
 		}
 	}
-
+	/*
 	for (int y = 0; y < 10; ++y) {
 		for (int x = 0; x < 10; ++x) {
 			if (grid.get(x, y) == 0) {
@@ -96,9 +107,9 @@ void GeoTestState::init() {
 	}
 
 	grid.debug();
-
-	for (int y = 0; y < 10; ++y) {
-		for (int x = 0; x < 10; ++x) {
+	*/
+	for (int y = 0; y < grid_dim; ++y) {
+		for (int x = 0; x < grid_dim; ++x) {
 			if (grid.get(x, y) == 2) {
 				int b = grid.adjacents(x, y);
 				if (b != 0) {
@@ -109,15 +120,18 @@ void GeoTestState::init() {
 		}
 	}
 
-	grid.debug();
+	//grid.debug();
 
-	for (int y = 0; y < 10; ++y) {
-		for (int x = 0; x < 10; ++x) {
+	for (int y = 0; y < grid_dim; ++y) {
+		for (int x = 0; x < grid_dim; ++x) {
 			if (grid.get(x, y) == 0) {
 				buildGrass(p2i(-5 + x, 5 - y));
 			}
 			if (grid.get(x,y) == 1) {
 				buildHouse(p2i(-5 + x, 5 - y));
+			}
+			if (grid.get(x, y) == 2) {
+				buildStreet(p2i(-5 + x, 5 - y),10);
 			}
 			if (grid.get(x,y) > 10 ) {
 				buildStreet(p2i(-5 + x, 5 - y),grid.get(x,y) - 10);
