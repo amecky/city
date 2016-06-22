@@ -40,6 +40,8 @@ void GeoTestState::init() {
 	_camera->resetPitch(DEGTORAD(25.0f));
 	_mesh = new ds::Mesh();
 
+	//_skyBox = ds::res::getSkyBox("SkyBox");
+
 	_ctx.gen = &gen;
 	_ctx.mesh = _mesh;
 
@@ -471,20 +473,17 @@ int GeoTestState::update(float dt) {
 // -------------------------------------------------------
 void GeoTestState::render() {
 	// scene
+	graphics::setCamera(_camera);
+	graphics::turnOffZBuffer();
+	//_skyBox->render();
+	graphics::turnOnZBuffer();
 	_scene->draw();
 	//_gui->drawGUI();
 }
 
-int GeoTestState::onChar(int ascii) {
-	if (ascii == 'r') {
-		gen.load_text(_name);
-		//gen.debug();
-		_mesh->clear();
-		gen.build(_mesh);
-	}
-	return 0;
-}
-
+// -------------------------------------------------------
+// drawGUI
+// -------------------------------------------------------
 void GeoTestState::drawGUI() {
 	graphics::setCamera(_orthoCamera);
 	graphics::turnOffZBuffer();

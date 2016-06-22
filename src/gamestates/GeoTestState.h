@@ -5,6 +5,7 @@
 #include <gen\MeshGen.h>
 #include <gen\MeshGenCommand.h>
 #include <gen\MeshGenGUI.h>
+#include <renderer\SkyBox.h>
 
 class GeoTestState : public ds::GameState {
 
@@ -14,7 +15,6 @@ public:
 	void init();
 	int update(float dt);
 	void render();
-	int onChar(int ascii);
 private:
 	void buildHouse(const p2i& gridPos);
 	void buildGrass(const p2i& gridPos);
@@ -41,5 +41,6 @@ private:
 	const char* _name;
 	bool _pressed;
 	ds::Array<ID> _ids;
+	//ds::SkyBox* _skyBox;
 };
 

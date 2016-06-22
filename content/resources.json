@@ -3,6 +3,11 @@ quad_index_buffer {
 	name : "SpriteQuadBuffer"
 	size : 24576
 }
+//index_buffer {
+//	id : 48
+//	name : "IndexBuffer"
+//	size : 24576
+//}
 sampler_state {
 	id : 10
 	name : "ClampSamplerState"
@@ -37,6 +42,15 @@ shader {
 	shader_model : "4_0"
 	sampler_state : "ClampSamplerState"
 }
+//shader {
+//	id : 49
+//	name : "SkyBoxShader"
+//	file : "content\shaders\SkyBox.fx"
+//	vertex_shader : "VS_Main"
+//	pixel_shader : "PS_Main"
+//	shader_model : "4_0"
+//	sampler_state : "ClampSamplerState"
+//}
 shader {
 	id : 32
 	name : "SpriteShader"
@@ -115,6 +129,11 @@ texture {
 	name : "gui" 
 	file : "gui.png"
 }
+//texture_cube {
+//	id : 50
+//	name : "skybox_texture"
+//	file : "SkyBoxTex.dds"
+//}
 font {
 	id : 7
 	name : "xscale"
@@ -280,3 +299,16 @@ scene {
 import {
 	file: "meshes.json"
 }
+//skybox {
+//	id : 51
+//	name : "SkyBox"
+//	size : 1024
+//	index_buffer : "IndexBuffer"
+//	constant_buffer : "MVP_CB_WORLD"
+//	vertex_buffer : "SpriteVertexBuffer"
+//	shader : "SkyBoxShader"
+//	blend_state : "regular_blendstate"
+//	color_map : 50
+//	input_layout : "PNTC_Layout"
+//	scale : 10
+//}
