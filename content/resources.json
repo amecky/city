@@ -3,11 +3,6 @@ quad_index_buffer {
 	name : "SpriteQuadBuffer"
 	size : 24576
 }
-//index_buffer {
-//	id : 48
-//	name : "IndexBuffer"
-//	size : 24576
-//}
 sampler_state {
 	id : 10
 	name : "ClampSamplerState"
@@ -42,15 +37,6 @@ shader {
 	shader_model : "4_0"
 	sampler_state : "ClampSamplerState"
 }
-//shader {
-//	id : 49
-//	name : "SkyBoxShader"
-//	file : "content\shaders\SkyBox.fx"
-//	vertex_shader : "VS_Main"
-//	pixel_shader : "PS_Main"
-//	shader_model : "4_0"
-//	sampler_state : "ClampSamplerState"
-//}
 shader {
 	id : 32
 	name : "SpriteShader"
@@ -93,6 +79,13 @@ vertex_buffer {
 	name : "SpriteVertexBuffer"
 	layout : "Sprite_Layout"
 	size : 4096
+	dynamic : true
+}
+vertex_buffer {
+	id : 47
+	name : "BasicVertexBuffer"
+	layout : "PNTC_Layout"
+	size : 8192
 	dynamic : true
 }
 blendstate {
@@ -176,38 +169,6 @@ imgui {
 	font : "gui_font"
 	sprite_buffer : "IMGUI_Buffer"
 }
-dialog {
-    id : 15
-	name : "MainMenu"
-    sprite_buffer : 8
-    font : 7
-	file : "MainMenu"
-}
-dialog {
-	id : 16 
-	name : "GameOver"
-	file : "GameOver" 
-	sprite_buffer : 8
-    font : 7
-}
-dialog {
-	id : 17
-	name : "Highscores"
-	file : "Highscores"
-	sprite_buffer : 8
-    font : 7
-}
-dialog {
-	id : 18
-	name : "HUD"
-	file : "HUD"
-	sprite_buffer : 8
-    font : 7
-}
-particles {
-	id : 19
-	sprite_buffer : 8
-}
 quad_buffer {
 	id : 20
 	name : "MESH_Buffer"
@@ -226,7 +187,7 @@ mesh_buffer {
 	size : 1024
 	index_buffer : "SpriteQuadBuffer"
 	constant_buffer : "MVP_CB_WORLD"
-	vertex_buffer : "SpriteVertexBuffer"
+	vertex_buffer : "BasicVertexBuffer"
 	shader : "TexturedShader"
 	blend_state : "regular_blendstate"
 	color_map : 5
@@ -238,7 +199,7 @@ mesh_buffer {
 	size : 4096
 	index_buffer : "SpriteQuadBuffer"
 	constant_buffer : "MVP_CB_WORLD"
-	vertex_buffer : "SpriteVertexBuffer"
+	vertex_buffer : "BasicVertexBuffer"
 	shader : "ColouredShader"
 	blend_state : "regular_blendstate"
 	color_map : 5
@@ -296,19 +257,14 @@ scene {
 	camera : "fps"
 	depth_enabled : true
 }
+material {
+	id : 48
+	name : "MeshMaterial"
+	diffuse : 255,255,255,255
+	ambient : 32,32,32,2555
+	blend_state : "regular_blendstate"
+	shader : "ColouredShader"
+}
 import {
 	file: "meshes.json"
 }
-//skybox {
-//	id : 51
-//	name : "SkyBox"
-//	size : 1024
-//	index_buffer : "IndexBuffer"
-//	constant_buffer : "MVP_CB_WORLD"
-//	vertex_buffer : "SpriteVertexBuffer"
-//	shader : "SkyBoxShader"
-//	blend_state : "regular_blendstate"
-//	color_map : 50
-//	input_layout : "PNTC_Layout"
-//	scale : 10
-//}

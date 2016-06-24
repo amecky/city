@@ -53,8 +53,13 @@ void GeoTestState::init() {
 	
 	char buffer[32];
 	// ----------------------------------------
+	// tower building test
+	// ----------------------------------------
+	buildTower(p2i(0, 0));
+	// ----------------------------------------
 	// house building test
 	// ----------------------------------------
+	/*
 	int grid_dim = 10;
 	SimpleGrid grid(10);
 	int cell_size = 2;
@@ -83,33 +88,7 @@ void GeoTestState::init() {
 			grid.set(sx + 1, sy + 1, 1);
 		}
 	}
-	/*
-	for (int y = 0; y < 10; ++y) {
-		for (int x = 0; x < 10; ++x) {
-			if (grid.get(x, y) == 0) {
-				int b = grid.adjacents(x, y, 1);
-				if (b != 0) {
-					grid.set(x, y, 2);
-				}
-			}
-		}
-	}
-
-	grid.debug();
-
-	for (int y = 0; y < 10; ++y) {
-		for (int x = 0; x < 10; ++x) {
-			if (grid.get(x, y) == 0) {
-				int b = grid.adjacents(x, y, 2);
-				if (b != 0) {
-					grid.set(x, y, 2);
-				}
-			}
-		}
-	}
-
-	grid.debug();
-	*/
+	
 	for (int y = 0; y < grid_dim; ++y) {
 		for (int x = 0; x < grid_dim; ++x) {
 			if (grid.get(x, y) == 2) {
@@ -122,7 +101,6 @@ void GeoTestState::init() {
 		}
 	}
 
-	//grid.debug();
 
 	for (int y = 0; y < grid_dim; ++y) {
 		for (int x = 0; x < grid_dim; ++x) {
@@ -140,6 +118,7 @@ void GeoTestState::init() {
 			}
 		}
 	}
+	*/
 	/*
 	for (int i = 0; i < 6; ++i) {
 		buildHouse(p2i(-4+i, 0));
@@ -810,6 +789,49 @@ void GeoTestState::buildStreet(const p2i& gridPos, int bits) {
 		}
 	}
 	//gen.debug_colors();
+	gen.recalculate_normals();
+	gen.build(m);
+	float sx = gridPos.x;
+	float sz = gridPos.y;
+	_scene->addStatic(m, v3(sx, 0.0f, sz));
+	_objects.push_back(m);
+}
+
+
+void GeoTestState::buildTower(const p2i& gridPos) {
+	ds::Mesh* m = new ds::Mesh;
+	gen.clear();
+	static ds::Color house_colors[] = { ds::Color(206, 122, 106, 255) , ds::Color(201,165,109,255), ds::Color(160,149,120,255) };
+	int gx = math::random(0.0f, 1.9f);
+	gx = 0;
+	float xp = gx * 0.5f;
+	int gy = math::random(0.0f, 1.9f);
+	float yp = gy * 0.5f;
+	LOG << "xp: " << xp << " yp: " << yp;
+	buildHouse(gridPos + p2i(gx, gy));
+	//gen.add_cube(v3(xp, 0, yp), v3(0.5f, 0.5f, 0.5f));
+	uint16_t faces[6];
+	uint16_t sub[6];
+	float nx = gx == 0 ? 0.5f : 0.0f;
+	LOG << "nx: " << nx;
+	//gen.add_cube(v3(nx, 0, yp), v3(0.5f, 0.5f, 0.5f),faces);
+
+	int floors = math::random(0.0f, 2.9f);
+	floors = 2;
+	uint16_t idx = 4;
+	for (int i = 0; i < floors; ++i) {
+		//gen.add_cube(v3(nx, 0.5f + i * 0.5f, yp), v3(0.5f, 0.5f, 0.5f), faces);
+	}
+
+	float ny = gy == 0 ? 0.5f : 0.0f;
+	LOG << "ny: " << nx;
+	//gen.add_cube(v3(xp, 0.0f, ny), v3(0.5f, 0.5f, 0.5f), faces);
+	floors = 1;
+	for (int i = 0; i < floors; ++i) {
+		//gen.add_cube(v3(xp, 0.5f + i * 0.5f, ny), v3(0.5f, 0.5f, 0.5f), faces);
+	}
+
+	gen.debug_colors();
 	gen.recalculate_normals();
 	gen.build(m);
 	float sx = gridPos.x;

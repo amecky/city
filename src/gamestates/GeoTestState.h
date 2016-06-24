@@ -16,6 +16,7 @@ public:
 	int update(float dt);
 	void render();
 private:
+	void buildTower(const p2i& gridPos);
 	void buildHouse(const p2i& gridPos);
 	void buildGrass(const p2i& gridPos);
 	void buildWall(ds::gen::MeshGen& gen,int face_idx);
