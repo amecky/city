@@ -57,5 +57,6 @@ private:
 	int _meshID;
 	p2i _gridPos;
 	ds::Array<TileCommand> _commands;
+	RID _material;
 };
 

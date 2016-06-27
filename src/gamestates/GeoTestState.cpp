@@ -39,7 +39,7 @@ void GeoTestState::init() {
 	_camera->setPosition(v3(0.0f, 1.5f, -3.0f), v3(0.0f, 0.0f, 0.1f));
 	_camera->resetPitch(DEGTORAD(25.0f));
 	_mesh = new ds::Mesh();
-
+	_material = ds::res::find("MeshMaterial", ds::ResourceType::MATERIAL);
 	//_skyBox = ds::res::getSkyBox("SkyBox");
 
 	_ctx.gen = &gen;
@@ -55,7 +55,8 @@ void GeoTestState::init() {
 	// ----------------------------------------
 	// tower building test
 	// ----------------------------------------
-	buildTower(p2i(0, 0));
+	buildTower(p2i(1, 1));
+	buildTower(p2i(4, 1));
 	// ----------------------------------------
 	// house building test
 	// ----------------------------------------
@@ -82,7 +83,7 @@ void GeoTestState::init() {
 			//int sy = math::random(0, offset - 1) + y * 10 / cells;
 			int sx = x * step + 1;
 			int sy = y * step + 1;
-			grid.set(sx, sy, 1);
+			grid.set(sx, sy, 3);
 			grid.set(sx + 1, sy, 1);
 			grid.set(sx, sy + 1, 1);
 			grid.set(sx + 1, sy + 1, 1);
@@ -107,8 +108,11 @@ void GeoTestState::init() {
 			if (grid.get(x, y) == 0) {
 				buildGrass(p2i(-5 + x, 5 - y));
 			}
-			if (grid.get(x,y) == 1) {
-				buildHouse(p2i(-5 + x, 5 - y));
+			//if (grid.get(x,y) == 1) {
+				//buildHouse(p2i(-5 + x, 5 - y));
+			//}
+			if (grid.get(x, y) == 3) {
+				buildTower(p2i(-5 + x, 5 - y));
 			}
 			if (grid.get(x, y) == 2) {
 				buildStreet(p2i(-5 + x, 5 - y),10);
@@ -351,7 +355,7 @@ void GeoTestState::buildTerrain() {
 	for (int y = reader.height() - 1; y >= 0; --y) {
 		for (int x = 0; x < reader.width(); ++x) {
 			int index = reader.get(x, y);
-			ID id = _scene->add(_objects[index], v3(-sx + x, sy, sz - y));
+			ID id = _scene->add(_objects[index], v3(-sx + x, sy, sz - y),_material);
 			_ids.push_back(id);
 		}
 	}
@@ -368,7 +372,7 @@ void GeoTestState::buildTestTerrain() {
 	float sy = 3.0f * 0.5f + 2;
 	for (int y = 3 - 1; y >= 0; --y) {
 		for (int x = 0; x < 3; ++x) {
-			_scene->add(m, v3(-sx + x, -3, sy - y));
+			_scene->add(m, v3(-sx + x, -3, sy - y),_material);
 		}
 	}
 }
@@ -643,7 +647,7 @@ void GeoTestState::buildGrass(const p2i& gridPos) {
 	gen.build(m);
 	float sx = gridPos.x;
 	float sz = gridPos.y;
-	_scene->addStatic(m, v3(sx, 0.0f, sz));
+	_scene->addStatic(m, v3(sx, 0.0f, sz),_material);
 	_objects.push_back(m);
 }
 // ----------------------------------------------------------
@@ -682,7 +686,7 @@ void GeoTestState::buildHouse(const p2i& gridPos) {
 	gen.build(m);
 	float sx = gridPos.x;// *0.5f;
 	float sz = gridPos.y;// *0.5f;
-	_scene->addStatic(m, v3(sx, 0.0f, sz));
+	_scene->addStatic(m, v3(sx, 0.0f, sz),_material);
 	_objects.push_back(m);
 }
 
@@ -793,49 +797,96 @@ void GeoTestState::buildStreet(const p2i& gridPos, int bits) {
 	gen.build(m);
 	float sx = gridPos.x;
 	float sz = gridPos.y;
-	_scene->addStatic(m, v3(sx, 0.0f, sz));
+	_scene->addStatic(m, v3(sx, 0.0f, sz),_material);
 	_objects.push_back(m);
 }
 
+void GeoTestState::buildHouse(const House& house) {
+	for (int y = 0; y < 2; ++y) {
+		for (int x = 0; x < 2; ++x) {
+			for (int h = 0; h < 5; ++h) {
+
+			}
+		}
+	}
+}
 
 void GeoTestState::buildTower(const p2i& gridPos) {
 	ds::Mesh* m = new ds::Mesh;
 	gen.clear();
-	static ds::Color house_colors[] = { ds::Color(206, 122, 106, 255) , ds::Color(201,165,109,255), ds::Color(160,149,120,255) };
+	House h;
 	int gx = math::random(0.0f, 1.9f);
-	gx = 0;
+	//gx = 0;
 	float xp = gx * 0.5f;
 	int gy = math::random(0.0f, 1.9f);
 	float yp = gy * 0.5f;
-	LOG << "xp: " << xp << " yp: " << yp;
-	buildHouse(gridPos + p2i(gx, gy));
-	//gen.add_cube(v3(xp, 0, yp), v3(0.5f, 0.5f, 0.5f));
-	uint16_t faces[6];
-	uint16_t sub[6];
-	float nx = gx == 0 ? 0.5f : 0.0f;
-	LOG << "nx: " << nx;
-	//gen.add_cube(v3(nx, 0, yp), v3(0.5f, 0.5f, 0.5f),faces);
-
-	int floors = math::random(0.0f, 2.9f);
-	floors = 2;
-	uint16_t idx = 4;
-	for (int i = 0; i < floors; ++i) {
-		//gen.add_cube(v3(nx, 0.5f + i * 0.5f, yp), v3(0.5f, 0.5f, 0.5f), faces);
+	h.pos = p2i(gx, gy);
+	h.tiles[gx][gy][0] = 1;
+	int nx = gx == 0 ? 1 : 0;
+	h.tiles[nx][gy][0] = 1;
+	int ny = gy == 0 ? 1 : 0;
+	h.tiles[gx][ny][0] = 1;
+	for (int y = 0; y < 2; ++y) {
+		for (int x = 0; x < 2; ++x) {
+			if (h.tiles[x][y][0] == 1) {
+				int k = math::random(1.0f, 3.9f);
+				h.colors[x][y] = math::random(0.0f, 2.9f);
+				for (int i = 0; i < k; ++i) {
+					h.tiles[x][y][i] = 1;
+				}
+			}
+		}
 	}
+	static ds::Color house_colors[] = { ds::Color(206, 122, 106, 255), ds::Color(201, 165, 109, 255), ds::Color(160, 149, 120, 255) };
+	uint16_t wf[6];	
+	for (int y = 0; y < 2; ++y) {
+		for (int x = 0; x < 2; ++x) {
+			float height = 0.0f;
+			float xp = gridPos.x + 0.1f + x * 0.8f;
+			float zp = gridPos.y + 0.1f + y * 0.8f;
+			for (int k = 0; k < 5; ++k) {				
+				float yp = k * 0.6f;
+				if (h.tiles[x][y][k] == 1) {
+					gen.set_color_selection(house_colors[h.colors[x][y]]);
+					
+					uint16_t num = gen.add_cube(v3(xp,yp,zp), v3(0.8f, 0.6f, 0.8f), wf);
+					height += 0.6f;
+					if (y == 1) {
+						if (h.tiles[x][y - 1][k] != 1) {
+							buildWall(gen, wf[0]);
+						}
+					}
+					else {
+						buildWall(gen, wf[0]);
+					}
 
-	float ny = gy == 0 ? 0.5f : 0.0f;
-	LOG << "ny: " << nx;
-	//gen.add_cube(v3(xp, 0.0f, ny), v3(0.5f, 0.5f, 0.5f), faces);
-	floors = 1;
-	for (int i = 0; i < floors; ++i) {
-		//gen.add_cube(v3(xp, 0.5f + i * 0.5f, ny), v3(0.5f, 0.5f, 0.5f), faces);
+					if (x == 0) {
+						if (h.tiles[x + 1][y][k] != 1) {
+							buildWall(gen, wf[1]);
+						}
+					}
+					else {
+						buildWall(gen, wf[1]);
+					}
+				}				
+			}
+			if (height > 0.0f) {
+				gen.set_color_selection(ds::Color(213, 207, 197, 255));
+				uint16_t rf = gen.add_cube(v3(xp, height - 0.25f, zp), v3(0.8f, 0.1f, 0.8f));
+				uint16_t roof_faces[9];
+				uint16_t rsf = gen.slice(rf + 4, 3, 3, roof_faces, 9);
+				uint16_t af[] = { roof_faces[0], roof_faces[2], roof_faces[8], roof_faces[6] };
+				gen.expand_face(roof_faces[4], af, 0.2f, 0.2f);
+				gen.extrude_face(roof_faces[4], -0.09f);
+				gen.remove_face(roof_faces[4]);
+			}
+		}
 	}
-
-	gen.debug_colors();
+	//gen.debug_colors();
 	gen.recalculate_normals();
 	gen.build(m);
 	float sx = gridPos.x;
 	float sz = gridPos.y;
-	_scene->addStatic(m, v3(sx, 0.0f, sz));
+	_scene->addStatic(m, v3(sx, 0.0f, sz),_material);
 	_objects.push_back(m);
 }

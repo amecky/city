@@ -34,5 +34,6 @@ private:
 	gui::ComponentModel<int> _model;
 	int _offset;
 	bool _switch;
+	RID _material;
 };
 

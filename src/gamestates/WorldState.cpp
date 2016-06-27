@@ -20,6 +20,7 @@ WorldState::WorldState() : ds::GameState("WorldState"), _mesh(0) , _selectionMes
 	for (int i = 0; i < total; ++i) {
 		_tiles[i].height = 0.0f;		
 	}
+	_material = ds::res::find("MeshMaterial", ds::ResourceType::MATERIAL);
 }
 
 void WorldState::init() {
@@ -73,7 +74,7 @@ void WorldState::parseFile() {
 			int idx = tx.value + ty.value * WORLD_SIZE;
 			WorldTile& t = _tiles[idx];
 			h = t.height;
-			t.id = _scene->addStatic(m, v3(-sx + tx.value, h, sz + ty.value));
+			t.id = _scene->addStatic(m, v3(-sx + tx.value, h, sz + ty.value), _material);
 			t.height += box.extent.y * 2.0f;
 			LOG << "t.height: " << t.height << " h: " << h;
 		}
@@ -244,7 +245,7 @@ void WorldState::process(const TileCommand& command) {
 	int idx = command.coord.x + command.coord.y * WORLD_SIZE;
 	WorldTile& t = _tiles[idx];
 	h = t.height;
-	t.id = _scene->addStatic(m, v3(-sx + command.coord.x, h, sz + command.coord.y));
+	t.id = _scene->addStatic(m, v3(-sx + command.coord.x, h, sz + command.coord.y),_material);
 	t.height += box.extent.y * 2.0f;
 	LOG << "t.height: " << t.height << " h: " << h;
 }

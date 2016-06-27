@@ -43,6 +43,7 @@ void MeshGenTestState::init() {
 	_mesh = new ds::Mesh();
 	_grid = new ds::Mesh();
 	_grid->load("grid");
+	_material = ds::res::find("MeshMaterial", ds::ResourceType::MATERIAL);
 	// build squares to show vertices of the selected face
 	ds::gen::MeshGen g;
 	g.add_cube(v3(0, 0, 0), v3(0.1f, 0.1f, 0.1f));
@@ -53,16 +54,16 @@ void MeshGenTestState::init() {
 			g.set_color(j, clrs[i]);
 		}
 		g.build(_squares[i]);
-		_square_ids[i] = _scene->add(_squares[i], v3(i * 1, 0, 0));
+		_square_ids[i] = _scene->add(_squares[i], v3(i * 1, 0, 0), _material);
 		ds::Entity& sqe = _scene->get(_square_ids[i]);
 		sqe.active = false;
 	}	
 	gen.load_text(_name);
 	gen.build(_mesh);
-	_grid_id = _scene->add(_grid, v3(0.0f, -0.01f, 0.0f));
+	_grid_id = _scene->add(_grid, v3(0.0f, -0.01f, 0.0f), _material);
 	ds::Entity& e = _scene->get(_grid_id);
 	e.active = false;
-	ID id = _scene->add(_mesh, v3(0, 0, 0));
+	ID id = _scene->add(_mesh, v3(0, 0, 0), _material);
 	_mesh->save(_name);
 
 	LOG << "'1' : reload";

@@ -132,6 +132,23 @@ font {
 	name : "xscale"
 	file : "xscale.json"
 }
+material {
+	id : 48
+	name : "MeshMaterial"
+	diffuse : 255,255,255,255
+	ambient : 32,32,32,2555
+	blend_state : "regular_blendstate"
+	shader : "ColouredShader"
+}
+material {
+	id : 49
+	name : "SpriteMaterial"
+	diffuse : 255,255,255,255
+	ambient : 32,32,32,2555
+	blend_state : "regular_blendstate"
+	shader : "SpriteShader"
+	texture: "TextureArray"
+}
 sprite_buffer {
 	id : 8
 	name : "BasicSpriteBuffer"
@@ -139,10 +156,7 @@ sprite_buffer {
 	index_buffer : 0
 	constant_buffer : "Screen_Dimension"
 	vertex_buffer : "SpriteVertexBuffer"
-	shader : 32
-	blend_state : 4
-	color_map : 5
-	input_layout : "Sprite_Layout"
+	material : "SpriteMaterial"
 	font : "xscale"
 }
 font {
@@ -157,10 +171,7 @@ sprite_buffer {
 	index_buffer : 0
 	constant_buffer : "Screen_Dimension"
 	vertex_buffer : "SpriteVertexBuffer"
-	shader : 32
-	blend_state : 4
-	color_map : 11
-	input_layout : "Sprite_Layout"
+	material : "SpriteMaterial"
 	font : "gui_font"
 }
 imgui {
@@ -188,10 +199,7 @@ mesh_buffer {
 	index_buffer : "SpriteQuadBuffer"
 	constant_buffer : "MVP_CB_WORLD"
 	vertex_buffer : "BasicVertexBuffer"
-	shader : "TexturedShader"
-	blend_state : "regular_blendstate"
-	color_map : 5
-	input_layout : "PNTC_Layout"
+	material : "MeshMaterial"
 }
 mesh_buffer {
 	id : 26
@@ -200,10 +208,7 @@ mesh_buffer {
 	index_buffer : "SpriteQuadBuffer"
 	constant_buffer : "MVP_CB_WORLD"
 	vertex_buffer : "BasicVertexBuffer"
-	shader : "ColouredShader"
-	blend_state : "regular_blendstate"
-	color_map : 5
-	input_layout : "PNTC_Layout"
+	material : "MeshMaterial"
 }
 camera {
 	id : 39
@@ -256,14 +261,6 @@ scene {
 	size : 1024
 	camera : "fps"
 	depth_enabled : true
-}
-material {
-	id : 48
-	name : "MeshMaterial"
-	diffuse : 255,255,255,255
-	ambient : 32,32,32,2555
-	blend_state : "regular_blendstate"
-	shader : "ColouredShader"
 }
 import {
 	file: "meshes.json"
