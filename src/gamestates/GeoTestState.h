@@ -7,6 +7,29 @@
 #include <gen\MeshGenGUI.h>
 #include <renderer\SkyBox.h>
 
+struct House {
+
+	int tiles[2][2][5];
+	int colors[2][2];
+	p2i pos;
+
+	House() {
+		for (int i = 0; i < 2; ++i) {
+			for (int j = 0; j < 2; ++j) {
+				for (int k = 0; k < 5; ++k) {
+					tiles[i][j][k] = -1;
+				}
+			}
+		}
+		for (int i = 0; i < 2; ++i) {
+			for (int j = 0; j < 2; ++j) {
+				colors[i][j] = 0;
+			}
+		}
+		pos = p2i(0, 0);
+	}
+};
+
 class GeoTestState : public ds::GameState {
 
 public:
@@ -18,6 +41,8 @@ public:
 private:
 	void buildTower(const p2i& gridPos);
 	void buildHouse(const p2i& gridPos);
+	void buildHouse(const House& house);
+
 	void buildGrass(const p2i& gridPos);
 	void buildWall(ds::gen::MeshGen& gen,int face_idx);
 	void buildStreet(const p2i& gridPos,int bits);
@@ -43,5 +68,6 @@ private:
 	bool _pressed;
 	ds::Array<ID> _ids;
 	//ds::SkyBox* _skyBox;
+	RID _material;
 };
 
