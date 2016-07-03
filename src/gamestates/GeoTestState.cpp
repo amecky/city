@@ -477,7 +477,7 @@ void GeoTestState::drawGUI() {
 	char buffer[128];
 	sprintf_s(buffer, 128, "%2.2f %2.2f %2.2f", _camera->getPosition().x, _camera->getPosition().y, _camera->getPosition().z);
 	gui::Value("Pos", buffer);
-	gui::Value("Yaw", RADTODEG(_camera->getAngle()));
+	gui::Value("Yaw", RADTODEG(_camera->getYaw()));
 	gui::Value("Pitch", RADTODEG(_camera->getPitch()));
 	if (gui::Button("Reset")) {
 		_camera->setPosition(v3(0, 0, -10), v3(0, 0, 1));

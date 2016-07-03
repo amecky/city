@@ -55,14 +55,12 @@ void MeshGenTestState::init() {
 		}
 		g.build(_squares[i]);
 		_square_ids[i] = _scene->add(_squares[i], v3(i * 1, 0, 0), _material);
-		ds::Entity& sqe = _scene->get(_square_ids[i]);
-		sqe.active = false;
+		_scene->deactivate(_square_ids[i]);
 	}	
 	gen.load_text(_name);
 	gen.build(_mesh);
 	_grid_id = _scene->add(_grid, v3(0.0f, -0.01f, 0.0f), _material);
-	ds::Entity& e = _scene->get(_grid_id);
-	e.active = false;
+	_scene->deactivate(_grid_id);
 	ID id = _scene->add(_mesh, v3(0, 0, 0), _material);
 	_mesh->save(_name);
 
@@ -105,9 +103,13 @@ int MeshGenTestState::update(float dt) {
 			const ds::gen::Face& f = gen.get_face(selection);
 			gen.get_vertices(f, p);
 			for (int i = 0; i < 4; ++i) {
-				ds::Entity& sqe = _scene->get(_square_ids[i]);
-				sqe.position = p[i];
-				sqe.active = selected;
+				_scene->setPosition(_square_ids[i],p[i]);
+				if (selected) {
+					_scene->activate(_square_ids[i]);
+				}
+				else {
+					_scene->deactivate(_square_ids[i]);
+				}
 			}
 		}
 		else {
@@ -129,8 +131,12 @@ int MeshGenTestState::update(float dt) {
 // -------------------------------------------------------
 void MeshGenTestState::showSelectionCubes(bool active) {
 	for (int i = 0; i < 4; ++i) {
-		ds::Entity& sqe = _scene->get(_square_ids[i]);
-		sqe.active = active;
+		if (active) {
+			_scene->activate(_square_ids[i]);
+		}
+		else {
+			_scene->deactivate(_square_ids[i]);
+		}
 	}
 }
 
@@ -138,7 +144,6 @@ void MeshGenTestState::showSelectionCubes(bool active) {
 // render
 // -------------------------------------------------------
 void MeshGenTestState::render() {
-	_scene->transform();
 	_scene->draw();
 	drawGUI();
 }
@@ -162,8 +167,13 @@ void MeshGenTestState::drawGUI() {
 		gen.debug();
 	}
 	if (gui::Button("Grid")) {
-		ds::Entity& e = _scene->get(_grid_id);
-		e.active = !e.active;
+		bool active = _scene->isActive(_grid_id);
+		if (active) {
+			_scene->deactivate(_grid_id);
+		}
+		else {
+			_scene->activate(_grid_id);
+		}
 	}
 	if (gui::Button("Save")) {
 		_mesh->save(_name);
@@ -203,8 +213,13 @@ int MeshGenTestState::onChar(int ascii) {
 		gen.debug();
 	}
 	if (ascii == '3') {
-		ds::Entity& e = _scene->get(_grid_id);
-		e.active = !e.active;
+		bool active = _scene->isActive(_grid_id);
+		if (active) {
+			_scene->deactivate(_grid_id);
+		}
+		else {
+			_scene->activate(_grid_id);
+		}
 	}
 	if (ascii == '4') {
 		_mesh->save(_name);

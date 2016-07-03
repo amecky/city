@@ -1,7 +1,7 @@
 #pragma once
 #include <lib\collection_types.h>
 #include <stdint.h>
-#include <renderer\Scene.h>
+#include <scene\Scene.h>
 #include <gen\MeshGen.h>
 #include <Point.h>
 

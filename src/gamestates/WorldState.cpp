@@ -138,8 +138,7 @@ int WorldState::update(float dt) {
 					_selectedCell = _tiles[i].coord;
 					float sx = WORLD_SIZE / 2.0f;
 					float sz = WORLD_SIZE / 2.0f;
-					ds::Entity& e = _scene->get(_selectionID);
-					e.position = v3(-sx + _selectedCell.x, -2.99f, sz + _selectedCell.y);
+					_scene->setPosition(_selectionID, v3(-sx + _selectedCell.x, -2.99f, sz + _selectedCell.y));
 				}
 			}
 		}
@@ -159,7 +158,6 @@ int WorldState::update(float dt) {
 // -------------------------------------------------------
 void WorldState::render() {
 	ZoneTracker("WSR");
-	_scene->transform();
 	_scene->draw();
 	drawGUI();
 }
