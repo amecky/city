@@ -10,7 +10,7 @@
 #include <utils\FileUtils.h>
 
 ActionTestState::ActionTestState() : ds::GameState("ActionTestState"), _mesh(0) , _offset(0) {
-	
+	_ttl = 0.5f;
 }
 
 
@@ -59,7 +59,7 @@ int ActionTestState::update(float dt) {
 // -------------------------------------------------------
 void ActionTestState::render() {
 	_scene->draw();
-	//drawGUI();
+	drawGUI();
 }
 
 void ActionTestState::drawGUI() {
@@ -69,6 +69,10 @@ void ActionTestState::drawGUI() {
 	int state = 1;
 	gui::start(1, &pos, true);
 	gui::begin("Editor", &state);
+	gui::InputFloat("TTL", &_ttl);
+	if (gui::Button("Rotate_180")) {
+		_scene->rotateTo(_id, v3(0, 0, 0), v3(0.0f, 0.0f, HALF_PI),_ttl);
+	}
 	gui::end();
 	graphics::turnOnZBuffer();
 }

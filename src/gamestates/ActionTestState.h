@@ -27,5 +27,6 @@ private:
 	bool _switch;
 	RID _material;
 	ID _id;
+	float _ttl;
 };
 
