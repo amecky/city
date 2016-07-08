@@ -141,13 +141,22 @@ material {
 	shader : "ColouredShader"
 }
 material {
+	id : 52
+	name : "TexturedMeshMaterial"
+	diffuse : 255,255,255,255
+	ambient : 32,32,32,2555
+	blend_state : "regular_blendstate"
+	shader : "TexturedShader"
+	texture : "TextureArray"
+}
+material {
 	id : 49
 	name : "SpriteMaterial"
 	diffuse : 255,255,255,255
 	ambient : 32,32,32,2555
 	blend_state : "regular_blendstate"
 	shader : "SpriteShader"
-	texture: "TextureArray"
+	texture : "TextureArray"
 }
 material {
 	id : 51
@@ -208,7 +217,7 @@ mesh_buffer {
 	index_buffer : "SpriteQuadBuffer"
 	constant_buffer : "MVP_CB_WORLD"
 	vertex_buffer : "BasicVertexBuffer"
-	material : "MeshMaterial"
+	material : "TexturedMeshMaterial"
 }
 mesh_buffer {
 	id : 26
@@ -219,24 +228,11 @@ mesh_buffer {
 	vertex_buffer : "BasicVertexBuffer"
 	material : "MeshMaterial"
 }
-camera {
-	id : 39
-	name : "ortho"
-	type : "orthographic"
-}
-camera {
-	id : 40
-	name : "fps"
-	type : "fps"
-	position : 0,0,-10
-	target : 0,0,1
-}
 scene {
 	id : 38
 	name : "EnemiesScene"
 	mesh_buffer : "ColouredBuffer"
 	size : 256
-	camera : "fps"
 	depth_enabled : true
 }
 scene {
@@ -244,7 +240,6 @@ scene {
 	name : "Stars"
 	mesh_buffer : "ColouredBuffer"
 	size : 256
-	camera : "fps"
 	depth_enabled : true
 }
 scene {
@@ -252,15 +247,13 @@ scene {
 	name : "Objects"
 	mesh_buffer : "ColouredBuffer"
 	size : 256
-	camera : "fps"
 	depth_enabled : true
 }
 scene {
 	id : 45
 	name : "TestObjects"
-	mesh_buffer : "ColouredBuffer"
+	mesh_buffer : "TexturedBuffer"
 	size : 256
-	camera : "fps"
 	depth_enabled : true
 }
 scene {
@@ -268,7 +261,6 @@ scene {
 	name : "World"
 	mesh_buffer : "ColouredBuffer"
 	size : 1024
-	camera : "fps"
 	depth_enabled : true
 }
 import {

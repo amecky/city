@@ -10,7 +10,7 @@
 class ActionTestState : public ds::GameState {
 
 public:
-	ActionTestState();
+	ActionTestState(ds::Game* game);
 	~ActionTestState();
 	void init();
 	int update(float dt);
@@ -22,7 +22,6 @@ private:
 	ds::FPSCamera* _camera;
 	ds::Mesh* _mesh;
 	ds::Scene* _scene;
-	ds::OrthoCamera* _orthoCamera;
 	int _offset;
 	bool _switch;
 	RID _material;

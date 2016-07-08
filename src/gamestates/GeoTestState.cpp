@@ -15,9 +15,9 @@ const int SIZE_Y = 8;
 
 
 
-GeoTestState::GeoTestState() : ds::GameState("GeoTestState"), _name("base_house") , _gui(0) , _mesh(0) {
-	_camera = (ds::FPSCamera*)ds::res::getCamera("fps");
-	_orthoCamera = (ds::OrthoCamera*)ds::res::getCamera("ortho");
+GeoTestState::GeoTestState(ds::Game* game) : ds::GameState("GeoTestState", game), _name("base_house"), _gui(0), _mesh(0) {
+	_camera = graphics::getFPSCamera();
+	_orthoCamera = graphics::getOrthoCamera();
 	_pressed = false;
 }
 

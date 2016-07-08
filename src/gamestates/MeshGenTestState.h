@@ -10,7 +10,7 @@
 class MeshGenTestState : public ds::GameState {
 
 public:
-	MeshGenTestState(const char* meshName);
+	MeshGenTestState(const char* meshName, ds::Game* game);
 	~MeshGenTestState();
 	void init();
 	int update(float dt);

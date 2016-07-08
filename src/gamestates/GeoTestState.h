@@ -33,7 +33,7 @@ struct House {
 class GeoTestState : public ds::GameState {
 
 public:
-	GeoTestState();
+	GeoTestState(ds::Game* game);
 	~GeoTestState();
 	void init();
 	int update(float dt);

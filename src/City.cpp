@@ -5,6 +5,7 @@
 #include "gamestates\MeshGenTestState.h"
 #include "gamestates\WorldState.h"
 #include "gamestates\ActionTestState.h"
+
 ds::BaseApp *app = new City(); 
 
 City::City() : ds::BaseApp() {
@@ -17,10 +18,10 @@ City::~City() {
 // Load content and prepare game
 // -------------------------------------------------------
 bool City::loadContent() {	
-	addGameState(new GeoTestState());
-	addGameState(new MeshGenTestState("house_3"));
-	addGameState(new WorldState());
-	addGameState(new ActionTestState());
+	addGameState(new GeoTestState(game));
+	addGameState(new MeshGenTestState("house_3", game));
+	addGameState(new WorldState(game));
+	addGameState(new ActionTestState(game));
 	connectGameStates("MeshGenTestState", 1, "WorldState");
 	connectGameStates("WorldState", 1, "MeshGenTestState");
 	return true;

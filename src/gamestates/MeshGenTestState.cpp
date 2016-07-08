@@ -9,7 +9,7 @@
 #include <utils\TileMapReader.h>
 #include <utils\FileUtils.h>
 
-MeshGenTestState::MeshGenTestState(const char* meshName) : ds::GameState("MeshGenTestState"), _name(meshName) , _mesh(0) , _grid(0) , _offset(0) , _switch(false) {
+MeshGenTestState::MeshGenTestState(const char* meshName, ds::Game* game) : ds::GameState("MeshGenTestState", game), _name(meshName), _mesh(0), _grid(0), _offset(0), _switch(false) {
 	for (int i = 0; i < 4; ++i) {
 		_squares[i] = 0;
 	}
@@ -34,10 +34,10 @@ MeshGenTestState::~MeshGenTestState() {
 // init
 // -------------------------------------------------------
 void MeshGenTestState::init() {
-	_camera = (ds::FPSCamera*)ds::res::getCamera("fps");
+	_camera = graphics::getFPSCamera();
 	_camera->setPosition(v3(0, 3, -6), v3(0.0f, 0.0f, 0.1f));
 	_camera->resetPitch(DEGTORAD(25.0f));
-	_orthoCamera = (ds::OrthoCamera*)ds::res::getCamera("ortho");
+	_orthoCamera = graphics::getOrthoCamera();
 	_scene = ds::res::getScene("TestObjects");
 	_pressed = false;
 	_mesh = new ds::Mesh();

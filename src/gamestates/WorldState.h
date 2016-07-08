@@ -27,7 +27,7 @@ class WorldState : public ds::GameState {
 	};
 
 public:
-	WorldState();
+	WorldState(ds::Game* game);
 	~WorldState();
 	void init();
 	int update(float dt);

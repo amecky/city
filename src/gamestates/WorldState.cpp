@@ -6,10 +6,10 @@
 #include <io\FileRepository.h>
 #include <io\BinaryFile.h>
 
-WorldState::WorldState() : ds::GameState("WorldState"), _mesh(0) , _selectionMesh(0) {
-	_camera = (ds::FPSCamera*)ds::res::getCamera("fps");
+WorldState::WorldState(ds::Game* game) : ds::GameState("WorldState", game), _mesh(0), _selectionMesh(0) {
+	_camera = graphics::getFPSCamera();
 	_pressed = false;
-	_orthoCamera = (ds::OrthoCamera*)ds::res::getCamera("ortho");
+	_orthoCamera = graphics::getOrthoCamera();
 	_world = new TinyWorld(WORLD_SIZE);
 	_switch = false;
 	_selectedCell = p2i(-1, -1);
