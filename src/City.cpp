@@ -5,6 +5,7 @@
 #include "gamestates\MeshGenTestState.h"
 #include "gamestates\WorldState.h"
 #include "gamestates\ActionTestState.h"
+#include "gamestates\SpriteTestState.h"
 
 ds::BaseApp *app = new City(); 
 
@@ -22,6 +23,7 @@ bool City::loadContent() {
 	addGameState(new MeshGenTestState("house_3", game));
 	addGameState(new WorldState(game));
 	addGameState(new ActionTestState(game));
+	addGameState(new SpriteTestState(game));
 	connectGameStates("MeshGenTestState", 1, "WorldState");
 	connectGameStates("WorldState", 1, "MeshGenTestState");
 	return true;
@@ -30,7 +32,7 @@ bool City::loadContent() {
 void City::init() {
 	// for testing
 	//activate("MeshGenTestState");
-	activate("ActionTestState");
+	activate("SpriteTestState");
 	//activate("WorldState");
 }
 
